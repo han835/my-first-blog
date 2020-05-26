@@ -23,7 +23,7 @@ class NewVisitorTest(VisitorTest):
         # right place by looking at the title
         # and header.
         self.assertIn('Harry\'s Blog', self.browser.title)
-        self.assertIn('Harry\'s Blog', self.browser.find_element_by_tag_name('h1').text)
+        self.assertIn('Harry Neil', self.browser.find_element_by_tag_name('h1').text)
 
 class CvReaderTest(VisitorTest):
 
