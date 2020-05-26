@@ -14,7 +14,7 @@
                 <a href="{% url 'post_draft_list' %}" class="top-menu"><span class="glyphicon glyphicon-edit"></span></a>
                 <p class="top-menu">Hello {{ user.username }} <small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
             {% else %}
-                <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
+                <a href="{% url 'login' %}?next={{request.path}}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
             {% endif %}
             <h1><a href="/">Harry's Blog</a> | <a href="/">Blog</a> | <a href="{% url 'cv_detail' %}">CV</a></h1>
         </div>
