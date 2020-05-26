@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
-from .models import Post
+from .models import Post, Cv
 from .forms import PostForm
 
 def post_list(request):
@@ -57,4 +57,5 @@ def post_remove(request, pk):
     return redirect('post_list')
 
 def cv_detail(request):
-    return render(request, 'blog/cv_detail.html', {})
+    cv = Cv.objects.first()
+    return render(request, 'blog/cv_detail.html', {'cv': cv})

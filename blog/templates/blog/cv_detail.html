@@ -1,0 +1,42 @@
+{% load static %}
+<html>
+    <head>
+        <title>Harry's Blog</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    </head>
+    <body>
+      <div class="page-header">
+          {% if user.is_authenticated %}
+              <!-- Need button to edit CV -->
+              <p class="top-menu">Hello {{ user.username }} <small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
+          {% else %}
+              <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
+          {% endif %}
+          <h1><a href="/">Harry's Blog</a> - CV</h1>
+      </div>
+      <div class="content container">
+          <div class="row">
+              <div class="col-md-8">
+                <div class="post">
+                    <div class="date">
+                        {{ cv.published_date }}
+                    </div>
+                    <h2>CV</h2>
+                    <p>{{ cv.header|linebreaksbr }}</p>
+                    <h2>Education</h2>
+                    <p>{{ cv.education|linebreaksbr }}</p>
+                    <h2>Experience</h2>
+                    <p>{{ cv.experience|linebreaksbr }}</p>
+                    <h2>Skills and Interests</h2>
+                    <p>{{ cv.skills_interests|linebreaksbr }}</p>
+                    <h2>Awards</h2>
+                    <p>{{ cv.awards|linebreaksbr }}</p>
+                </div>
+              </div>
+          </div>
+      </div>
+    </body>
+</html>
