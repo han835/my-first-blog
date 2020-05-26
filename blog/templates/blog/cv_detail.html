@@ -10,7 +10,7 @@
     <body>
       <div class="page-header">
           {% if user.is_authenticated %}
-              <!-- Need button to edit CV -->
+              <a href="{% url 'cv_edit' %}" class="top-menu"><span class="glyphicon glyphicon-edit"></span></a>
               <p class="top-menu">Hello {{ user.username }} <small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
           {% else %}
               <a href="{% url 'login' %}?next={{request.path}}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>

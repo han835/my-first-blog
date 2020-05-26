@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from .models import Post, Cv
-from .forms import PostForm
+from .forms import PostForm, CvForm
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -59,3 +59,18 @@ def post_remove(request, pk):
 def cv_detail(request):
     cv = Cv.objects.first()
     return render(request, 'blog/cv_detail.html', {'cv': cv})
+
+@login_required
+def cv_edit(request):
+    cv = Cv.objects.first()
+    if request.method == "POST":
+        form = CvForm(request.POST, instance=cv)
+        if form.is_valid():
+            cv = form.save(commit=False)
+            cv.author = request.user
+            cv.published_date = timezone.now()
+            cv.save()
+            return redirect('cv_detail')
+    else:
+        form = CvForm(instance=cv)
+    return render(request, 'blog/cv_edit.html', {'form': form})

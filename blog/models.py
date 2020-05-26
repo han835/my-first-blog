@@ -19,11 +19,11 @@ class Post(models.Model):
 
 class Cv(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    header = models.TextField()
-    education = models.TextField()
-    experience = models.TextField()
-    skills_interests = models.TextField()
-    awards = models.TextField()
+    header = models.TextField(verbose_name='Header')
+    education = models.TextField(verbose_name='Education')
+    experience = models.TextField(verbose_name='Experience')
+    skills_interests = models.TextField(verbose_name='Skills and Interests')
+    awards = models.TextField(verbose_name='Awards')
     published_date = models.DateTimeField(blank=True, null=True)
 
     def publish(self):

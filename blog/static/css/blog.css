@@ -30,6 +30,10 @@ h1, h2, h3, h4 {
     width: 100%;
 }
 
+.cv-form textarea, .cv-form input {
+    width: 100%;
+}
+
 .top-menu, .top-menu:hover, .top-menu:visited {
     color: #ffffff;
     float: right;
