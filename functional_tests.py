@@ -72,8 +72,5 @@ class CvReaderTest(VisitorTest):
         # He checks that the correct url is found.
         self.assertEqual('http://127.0.0.1:8000/cv/', self.browser.current_url)
 
-        # He also checks that the header is correct.
-        #self.assertIn('CV', self.browser.find_element_by_tag_name('h2'))
-
 if __name__ == '__main__':
     unittest.main(warnings='ignore')

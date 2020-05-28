@@ -1,5 +1,5 @@
 from django.urls import resolve
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.http import HttpRequest
 from django.contrib.auth.models import User
 
@@ -81,3 +81,52 @@ class CvPageEditTest(TestCase):
     def test_cv_edit_authentication(self):
         response = self.client.get('/cv/edit/')
         self.assertTrue(response.status_code, 401)
+
+    def test_cv_edit_returns_correct_html(self):
+        user = User.objects.create(username='test')
+        user.set_password('password')
+        user.save()
+
+        self.client.login(username='test', password='password')
+        response = self.client.get('/cv/edit/')
+        self.assertTemplateUsed(response, 'blog/cv_edit.html')
+
+    # Testing that post request can be saved.
+    def test_post_request_save_and_that_only_one_cv_object_is_present(self):
+        user = User.objects.create(username='test')
+        user.set_password('password')
+        user.save()
+        self.client.login(username='test', password='password')
+
+        self.client.post('/cv/edit/', data={'header': 'Header1', 'education': 'Education1', 'experience': 'Experience1', 'skills_interests': 'Skills and Interests1', 'awards': 'Awards1'})
+
+        self.assertEqual(Cv.objects.count(), 1)
+        new_item = Cv.objects.first()
+        self.assertEqual(new_item.header, 'Header1')
+        self.assertEqual(new_item.education, 'Education1')
+        self.assertEqual(new_item.experience, 'Experience1')
+        self.assertEqual(new_item.skills_interests, 'Skills and Interests1')
+        self.assertEqual(new_item.awards, 'Awards1')
+
+        # Perform another post request and check that only 1 object is present.
+        self.client.post('/cv/edit/', data={'header': '1', 'education': '2', 'experience': '3', 'skills_interests': '4', 'awards':'5'})
+
+        self.assertEqual(Cv.objects.count(), 1)
+
+        new_item2 = Cv.objects.first()
+        self.assertEqual(new_item2.header, '1')
+        self.assertEqual(new_item2.education, '2')
+        self.assertEqual(new_item2.experience, '3')
+        self.assertEqual(new_item2.skills_interests, '4')
+        self.assertEqual(new_item2.awards, '5')
+
+    # Testing that after editing CV that you are redirected to cv url.
+    def test_redirect_after_post_request(self):
+        user = User.objects.create(username='test')
+        user.set_password('password')
+        user.save()
+        self.client.login(username='test', password='password')
+
+        response = self.client.post('/cv/edit/', data={'header': '1', 'education': '2', 'experience': '3', 'skills_interests': '4', 'awards':'5'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/cv/')
